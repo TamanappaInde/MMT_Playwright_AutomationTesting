@@ -1,0 +1,56 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: launchMMT.spec.js >> Launch Browser and Open MMT Website
+- Location: tests\launchMMT.spec.js:3:1
+
+# Error details
+
+```
+Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.makemytrip.com/
+Call log:
+  - navigating to "https://www.makemytrip.com/", waiting until "domcontentloaded"
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e6]:
+  - heading "This site can’t be reached" [level=1] [ref=e7]
+  - paragraph [ref=e8]:
+    - text: The webpage at
+    - strong [ref=e9]: https://www.makemytrip.com/
+    - text: might be temporarily down or it may have moved permanently to a new web address.
+  - generic [ref=e10]: ERR_HTTP2_PROTOCOL_ERROR
+```
+
+# Test source
+
+```ts
+  1  | const {test, expect } = require('@playwright/test');
+  2  | 
+  3  | test ('Launch Browser and Open MMT Website', async ({page})=> {
+  4  | 
+  5  |     // Navigate to MMT
+> 6  |     await page.goto("https://www.makemytrip.com/", {
+     |                ^ Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.makemytrip.com/
+  7  |           waitUntil: 'domcontentloaded'
+  8  |     });
+  9  |     
+  10 |     // wait for page load
+  11 |     await page.waitForTimeout(5000);
+  12 | 
+  13 |     // Verify the title
+  14 |     await expect(page).toHaveTitle(/MakeMyTrip/i)
+  15 | 
+  16 |     console.log("MMT Website opened successfully");
+  17 | })
+  18 | 
+  19 | 
+```

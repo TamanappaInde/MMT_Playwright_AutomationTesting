@@ -20,10 +20,24 @@ test ('TC01- Launch Browser and Open MMT Website', async({page})=>{
 
 test ('TC03- Verify Flight Tab is Selected By default', async({page})=>{
       const homepage = new HomePage(page);
+      await page.goto('https://www.makemytrip.com/',{
+        waitUntil: 'domcontentloaded',
+        timeout: 60000
+    });
+      await page.waitForLoadState("domcontentloaded");
+
+      await homepage.closeLoginPopup();
       await expect(homepage.flightsTab).toBeVisible();
-      await expect(homepage.flightsTab).toHaveClass("//span[@class='chNavIcon appendBottom2 chSprite chFlights active']");
+      await expect(homepage.flightsTab).toHaveClass("chNavIcon appendBottom2 chSprite chFlights active");
 
       console.log("The Flight Tab is selected by default");
-      
+})
+
+test ('TC04- Verify One Way Trip option is selected By default', async ({page}) => {
+      const homepage = new HomePage(page);
+      await expect(homepage.oneWayTrip).toBeVisible();
+      const className = await homepage.isonewayTripSelected();
+      expect(className).toContain("Selected")
+
 })
 

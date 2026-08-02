@@ -12,17 +12,22 @@
 # Error details
 
 ```
-Error: expect(locator).toBeVisible() failed
-
-Locator: locator('//span[@class=\'chNavIcon appendBottom2 chSprite chFlights active\']')
-Expected: visible
-Timeout: 5000ms
-Error: element(s) not found
-
+Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.makemytrip.com/
 Call log:
-  - Expect "toBeVisible" with timeout 5000ms
-  - waiting for locator('//span[@class=\'chNavIcon appendBottom2 chSprite chFlights active\']')
+  - navigating to "https://www.makemytrip.com/", waiting until "domcontentloaded"
 
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e6]:
+  - heading "This site can’t be reached" [level=1] [ref=e7]
+  - paragraph [ref=e8]:
+    - text: The webpage at
+    - strong [ref=e9]: https://www.makemytrip.com/
+    - text: might be temporarily down or it may have moved permanently to a new web address.
+  - generic [ref=e10]: ERR_HTTP2_PROTOCOL_ERROR
 ```
 
 # Test source
@@ -50,13 +55,27 @@ Call log:
   20 | 
   21 | test ('TC03- Verify Flight Tab is Selected By default', async({page})=>{
   22 |       const homepage = new HomePage(page);
-> 23 |       await expect(homepage.flightsTab).toBeVisible();
-     |                                         ^ Error: expect(locator).toBeVisible() failed
-  24 |       await expect(homepage.flightsTab).toHaveClass("//span[@class='chNavIcon appendBottom2 chSprite chFlights active']");
-  25 | 
-  26 |       console.log("The Flight Tab is selected by default");
-  27 |       
-  28 | })
-  29 | 
-  30 | 
+> 23 |       await page.goto('https://www.makemytrip.com/',{
+     |                  ^ Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.makemytrip.com/
+  24 |         waitUntil: 'domcontentloaded',
+  25 |         timeout: 60000
+  26 |     });
+  27 |       await page.waitForLoadState("domcontentloaded");
+  28 | 
+  29 |       await homepage.closeLoginPopup();
+  30 |       await expect(homepage.flightsTab).toBeVisible();
+  31 |       await expect(homepage.flightsTab).toHaveClass("chNavIcon appendBottom2 chSprite chFlights active");
+  32 | 
+  33 |       console.log("The Flight Tab is selected by default");
+  34 | })
+  35 | 
+  36 | test ('TC04- Verify One Way Trip option is selected By default', async ({page}) => {
+  37 |       const homepage = new HomePage(page);
+  38 |       await expect(homepage.oneWayTrip).toBeVisible();
+  39 |       const className = await homepage.isonewayTripSelected();
+  40 |       expect(className).toContain("Selected")
+  41 | 
+  42 | })
+  43 | 
+  44 | 
 ```

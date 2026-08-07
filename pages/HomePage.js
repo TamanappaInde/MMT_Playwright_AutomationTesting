@@ -12,6 +12,11 @@ class HomePage {
     this.roundTrip = page.locator("//li[@data-cy='roundTrip']")
     this.multipleTrips =  page.locator("//li[@data-cy='mulitiCityTrip']")
 
+    // From city
+    this.fromCity = page.locator("//label[@for='fromCity']")
+    this.fromCitySearchBOx = page.locator("//input[@placeholder='From']")
+
+
     }
     // Close Login popup
     async closeLoginPopup (){
@@ -27,7 +32,11 @@ class HomePage {
     // Is One Way Trip selected by default
     async isonewayTripSelected(){
         return await this.oneWayTrip.getAttribute("class")
+    }
 
+    // CLick on from city
+    async clickFromCity(){
+        await this.fromCity.click()
     }
 }
 module.exports = HomePage;

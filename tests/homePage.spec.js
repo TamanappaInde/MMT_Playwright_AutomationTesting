@@ -34,9 +34,12 @@ test ('TC03- Verify Flight Tab is Selected By default', async({page})=>{
 
 test ('TC04- Verify One Way Trip option is selected By default', async ({page}) => {
       const homepage = new HomePage(page);
+      await page.goto("https://www.makemytrip.com");
+      await page.waitForLoadState("domcontentloaded");
+      await homepage.closeLoginPopup();
       await expect(homepage.oneWayTrip).toBeVisible();
       const className = await homepage.isonewayTripSelected();
-      expect(className).toContain("Selected")
+      expect(className).toContain("selected");
       console.log("The One Way Trip is selected by default");
 
 })
@@ -45,7 +48,7 @@ test ('TC05- Verify From City field is visible and clickable', async ({page}) =>
     const homepage = new HomePage(page);
     await page.goto('https://www.makemytrip.com');
     await page.waitForLoadState('domcontentloaded');
-    await page.closeLoginPopup();
+    await homepage.closeLoginPopup();
     // Verify From City field is visible
     await expect(homepage.fromCity).toBeVisible();
     // Click on From City

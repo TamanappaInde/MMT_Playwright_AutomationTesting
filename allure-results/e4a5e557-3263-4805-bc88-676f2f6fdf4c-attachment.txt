@@ -1,0 +1,1 @@
+From City field is visible and clickable

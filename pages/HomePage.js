@@ -8,7 +8,7 @@ class HomePage {
     this.flightsTab = page.locator("//span[@class='chNavIcon appendBottom2 chSprite chFlights active']");
 
     // Trip type radio buttons
-    this.oneWayTrip = page.locator(".selected") 
+    this.oneWayTrip = page.locator("//li[@data-cy='oneWayTrip']") 
     this.roundTrip = page.locator("//li[@data-cy='roundTrip']")
     this.multipleTrips =  page.locator("//li[@data-cy='mulitiCityTrip']")
 

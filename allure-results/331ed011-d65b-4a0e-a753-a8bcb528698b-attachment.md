@@ -1,0 +1,95 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: homePage.spec.js >> TC05- Verify Departure and Retun date visible and clickable
+- Location: tests\homePage.spec.js:54:1
+
+# Error details
+
+```
+Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.makemytrip.com/
+Call log:
+  - navigating to "https://www.makemytrip.com/", waiting until "domcontentloaded"
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e6]:
+  - heading "This site can’t be reached" [level=1] [ref=e7]
+  - paragraph [ref=e8]:
+    - text: The webpage at
+    - strong [ref=e9]: https://www.makemytrip.com/
+    - text: might be temporarily down or it may have moved permanently to a new web address.
+  - generic [ref=e10]: ERR_HTTP2_PROTOCOL_ERROR
+```
+
+# Test source
+
+```ts
+  1  | const {test, expect } = require('@playwright/test');
+  2  | const HomePage = require('../pages/HomePage');
+  3  | 
+  4  | test.beforeEach(async ({page}) => {
+  5  |     const homepage = new HomePage(page);
+> 6  |     await page.goto('https://www.makemytrip.com/', {
+     |                ^ Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.makemytrip.com/
+  7  |         waitUntil: 'domcontentloaded',
+  8  |         timeout: 60000
+  9  |     });
+  10 |     await homepage.closeLoginPopup();
+  11 | })
+  12 | 
+  13 | test ('TC01- Launch Browser and Open MMT Website', async({page})=>{
+  14 |     const homepage = new HomePage(page);
+  15 |     await expect(page).toHaveTitle('MakeMyTrip - #1 Travel Website 50% OFF on Hotels, Flights & Holiday');
+  16 |     // Verify the flights tab visible
+  17 |     await expect(homepage.flightsTab).toBeVisible();
+  18 |     console.log('MMT Home Page is loaded successfully');
+  19 | });
+  20 | 
+  21 | test ('TC02- Verify Flight Tab is Selected By default', async({page})=>{
+  22 |       const homepage = new HomePage(page);
+  23 |       await expect(homepage.flightsTab).toBeVisible();
+  24 |       await expect(homepage.flightsTab).toHaveClass("chNavIcon appendBottom2 chSprite chFlights active");
+  25 |       console.log("The Flight Tab is selected by default");
+  26 | })
+  27 | 
+  28 | test ('TC03- Verify One Way Trip option is selected By default', async ({page}) => {
+  29 |       const homepage = new HomePage(page);
+  30 |       await expect(homepage.oneWayTrip).toBeVisible();
+  31 |       const className = await homepage.isonewayTripSelected();
+  32 |       expect(className).toContain("selected");
+  33 |       console.log("The One Way Trip is selected by default");
+  34 | })
+  35 | 
+  36 | test ('TC04- Verify From City field is visible and clickable', async ({page}) => {
+  37 |     const homepage = new HomePage(page);
+  38 |     // Verify From City field is visible
+  39 |     await expect(homepage.fromCity).toBeVisible();
+  40 |     // Click on From City
+  41 |     await homepage.clickFromCity();
+  42 |     // Verify search input field is displayed
+  43 |     await expect(homepage.fromCitySearchBOx).toBeVisible();
+  44 |     console.log("From City field is visible and clickable");
+  45 | })
+  46 | 
+  47 | test ('TC05- Verify To City field is visible and clickable', async ({page}) => {
+  48 |     const homepage = new HomePage(page);
+  49 |     await homepage.clickToCity();
+  50 |     await expect(homepage.toCitySearchBox).toBeVisible();
+  51 |     console.log("To city field is visible and clickable");
+  52 | })
+  53 | 
+  54 | test ('TC05- Verify Departure and Retun date visible and clickable', async ({page}) => {
+  55 |     const homepage = new HomePage(page);
+  56 |     await homepage.clickOnDeparture();
+  57 |     
+  58 | })
+```

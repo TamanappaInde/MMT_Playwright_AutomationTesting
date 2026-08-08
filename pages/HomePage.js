@@ -16,8 +16,16 @@ class HomePage {
     this.fromCity = page.locator("//label[@for='fromCity']")
     this.fromCitySearchBOx = page.locator("//input[@placeholder='From']")
 
+    // To city
+    this.toCity = page.locator("//label[@for='toCity']")
+    this.toCitySearchBox = page.locator("//input[@placeholder='To']")
+
+    // Departure label
+    this.theDeparture = page.locator("//label[@for='departure']")
 
     }
+
+    
     // Close Login popup
     async closeLoginPopup (){
         await this.pageBody.click({
@@ -28,15 +36,21 @@ class HomePage {
     async isFlightTabVisible(){
         return await this.flightsTab.isVisible();
     }
-    
     // Is One Way Trip selected by default
     async isonewayTripSelected(){
         return await this.oneWayTrip.getAttribute("class")
     }
-
     // CLick on from city
     async clickFromCity(){
         await this.fromCity.click()
+    }
+    // Click on to city
+    async clickToCity(){
+        await this.toCity.click()
+    }
+    // Click on Departure
+    async clickOnDeparture(){
+        await this.theDeparture.click()
     }
 }
 module.exports = HomePage;

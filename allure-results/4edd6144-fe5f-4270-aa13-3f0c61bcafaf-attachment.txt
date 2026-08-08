@@ -1,0 +1,1 @@
+To city field is visible and clickable
